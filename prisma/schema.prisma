@@ -15,8 +15,8 @@ model User {
   email        String?  @unique
   mobile       String?  @unique
   password     String   @db.VarChar(72)
-  profileImage String   @map("profile_map")
-  coverImage   String   @map("cover_image")
+  profileImage String?   @map("profile_map")
+  coverImage   String?   @map("cover_image")
   createdAt    DateTime @default(now()) @map("create_at") @db.Timestamp(0)
   updatedAt    DateTime @updatedAt @map("update_at") @db.Timestamp(0)
 
