@@ -5,6 +5,21 @@ import createError from '../utils/create-error.util.js'
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const mobileRegex = /^[0-9]{10,15}$/
 
+export const loginSchema = object({
+  identity: string()
+    .test('Identity check',
+      'Identity must be a valid email or mobile number',
+      value => {
+        // if (!value) { return true }
+        return emailRegex.test(value) || mobileRegex.test(value)
+      }),
+  password: string().min(4).required(),
+  email: string().email(),
+  mobile: string().matches(mobileRegex)
+}).transform(value => {
+  return ({ ...value, [emailRegex.test(value.identity) ? 'email' : 'mobile']: value.identity })
+}).noUnknown()
+
 export const registerSchema = object({
   firstName: string().required(),
   lastName: string().required(),
@@ -18,7 +33,7 @@ export const registerSchema = object({
   password: string().min(4).required(),
   confirmPassword: string().oneOf([ref("password")], `confirmPassword must match password`),
   // email: string().email(),
-  email: string().test('must an email','email is invalid', value => !value || emailRegex.test(value)),
+  email: string().test('must an email', 'email is invalid', value => !value || emailRegex.test(value)),
   mobile: string().matches(mobileRegex)
 
 }).transform((value) => {
@@ -44,15 +59,16 @@ export const registerSchema = object({
 ).noUnknown()
 
 
-export const validate = (schema,options = {}) => {
-  return async function (req,res,next) {
+export const validate = (schema, options = {}) => {
+  return async function (req, res, next) {
     try {
-      const cleanBody = await schema.validate(req.body, {abortEarly:false, ...options})
+      const cleanBody = await schema.validate(req.body, { abortEarly: false, ...options })
       req.body = cleanBody
       next()
     } catch (err) {
-      console.log('err.errors', err.errors)
-      createError(400,err.errors)
+      let errMsg = err.errors.join('|||')
+      console.log('err', errMsg)
+      createError(400, errMsg)
     }
   }
 }

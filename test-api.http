@@ -3,9 +3,9 @@ POST http://localhost:8899/api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "a123@nnn.com",
-  "mobile": "12345609854",
-  "firstName" : "someone1",
+  # "email": "a123@nnn.com",
+  # "mobile": "12345609854",
+  # "firstName" : "someone1",
   "lastName": "Codecamp",
   "password": "123456",
   "confirmPassword": "123456"
@@ -20,7 +20,12 @@ GET http://localhost:8899/api/auth/men HTTP/1.1
 
 
 POST http://localhost:8899/api/auth/login HTTP/1.1
+Content-Type: application/json
 
+{
+  "identity":"a123@nnn.com",
+  "password": "123456"
+}
 ###
 
 POST http://localhost:8899/api/auth/register HTTP/1.1

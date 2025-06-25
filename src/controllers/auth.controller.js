@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 import prisma from '../config/prisma.config.js'
 import checkIdentity from '../utils/check-identity.util.js'
 import createError from '../utils/create-error.util.js'
@@ -72,11 +73,34 @@ export async function registerYup(req, res, next) {
   }
 }
 
-export const login = (req, res, next) => {
+export const login = async (req, res, next) => {
   try {
+    const {identity,password,email,mobile} = req.body
+    const identityKey = email ? 'email' : 'mobile'
+
+    const foundUser = await prisma.user.findUnique({
+      where: {[identityKey]:identity}
+    })
+    if(!foundUser) {
+      createError(401, "Invalid Login")
+    }
+    let pwOk = await bcrypt.compare(password, foundUser.password)
+    console.log('pwOk', pwOk)
+    if(!pwOk) {
+       createError(401, "Invalid Login")
+    }
+
+    // create token
+    const payload = {id:foundUser.id}
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      algorithm: "HS256",
+      expiresIn: '15d'
+    })
+
+
     res.json({
-      msg: 'Login controller',
-      body: req.body
+      msg: 'Login successful',
+      token:token
     })
   } catch (err) {
     next(err)
