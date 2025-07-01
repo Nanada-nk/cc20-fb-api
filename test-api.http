@@ -3,9 +3,9 @@ POST http://localhost:8899/api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-  # "email": "a123@nnn.com",
-  # "mobile": "12345609854",
-  # "firstName" : "someone1",
+  "email": "Bobby@gg.com",
+  # "mobile": "123456789",
+  "firstName" : "Bobby",
   "lastName": "Codecamp",
   "password": "123456",
   "confirmPassword": "123456"
@@ -23,7 +23,7 @@ POST http://localhost:8899/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "identity":"a123@nnn.com",
+  "identity":"Bobby@gg.com",
   "password": "123456"
 }
 ###
@@ -33,6 +33,7 @@ POST http://localhost:8899/api/auth/register HTTP/1.1
 ###
 
 GET http://localhost:8899/api/auth/me HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTc1MDkwOTA2MywiZXhwIjoxNzUyMjA1MDYzfQ.njYHbcxMXYV9KHBmtzlaaje_fcGo8S3OPycXJpGxv5w
 
 ###
 
@@ -53,3 +54,17 @@ Content-Type: application/json
   "identity": "andy@gg.mail",
   "password": "123456"
 }
+
+###
+
+GET  http://localhost:8899/api/post HTTP/1.1
+
+###
+
+PUT   http://localhost:8899/api/post HTTP/1.1
+
+###
+
+DELETE    http://localhost:8899/api/post HTTP/1.1
+
+
