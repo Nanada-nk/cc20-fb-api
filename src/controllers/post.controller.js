@@ -16,7 +16,11 @@ export const getAllPosts = async (req, res, next) => {
           profileImage: true
         }
       },
-      comments: true,
+      comments: {
+        include: {
+          user: { select: { firstName: true, lastName: true, profileImage: true } }
+        }
+      },
       likes: true
     }
   })
