@@ -7,7 +7,7 @@ const postRoute = express.Router()
 postRoute.get('/',postController.getAllPosts)
 postRoute.post('/',upload.single('image') ,postController.createPost)
 // postRoute.post('/',upload.array('image') ,postController.createPost)
-postRoute.put('/',postController.updatePost)
-postRoute.delete('/',postController.deletePost)
+postRoute.put('/:id',upload.single('image'),postController.updatePost)
+postRoute.delete('/:id',postController.deletePost)
 
 export default postRoute
